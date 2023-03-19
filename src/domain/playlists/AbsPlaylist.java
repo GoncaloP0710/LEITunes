@@ -1,3 +1,5 @@
+package domain.playlists;
+
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
@@ -5,11 +7,13 @@ import domain.core.MusicLibrary;
 import domain.core.Song;
 import domain.core.SongLibraryEvent;
 import domain.facade.ISong;
+import util.adts.AbsQListWithSelection;
 
 public abstract class AbsPlaylist implements Playlist{
 	
 	private MusicLibrary library;
-	private ArrayList<Song> playlist;
+	private AbsQListWithSelection<ISong> playlist;
+	private String playlistName;
 	
 	public AbsPlaylist(MusicLibrary library1) {
 		library = library1;
@@ -33,14 +37,20 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @requires someSelected()
 	 * @ensures \return != null
 	 */
-	ISong getSelected();	
+	@Override
+	public ISong getSelected() {
+		return playlist.getSelected();
+	}
 	
 	/**
 	 * Returns true if some element is selected
 	 * 
 	 * @return true if some element is selected, false otherwise
 	 */
-	boolean someSelected();
+	@Override
+	public boolean someSelected() {
+		return playlist.getSelected() != null;
+	}
 	
 	/**
 	 * Adds a song to the end of the playlist, if it
@@ -54,7 +64,22 @@ public abstract class AbsPlaylist implements Playlist{
 	 * 						someSelected() && 
 	 * 						getIndexSelected() == size() - 1
 	 */
-	boolean add(ISong song);
+	@Override
+	public boolean add(ISong song) {
+		boolean exist = false;
+		for (int i = 0; i < size(); i++) {
+			if (playlist.get(i) == song) {
+				exist = true;
+				break;
+			}
+		}
+		if(!exist) {
+			playlist.add(song);
+			playlist.select(size()-1);
+			return true;
+		}
+		return false;
+	}
 	
 	/**
 	 * Removes the selected element from the playlist, if possible
@@ -65,7 +90,14 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @ensures !\return ==> \old someSelected() == someSelected()
 	 * 							&& size() == \old(size()) 
 	 */
-	boolean remove();
+	@Override
+	public boolean remove() {
+		if(playlist.someSelected()) {
+			playlist.remove();
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Selects song at position i
@@ -75,7 +107,10 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @ensures someSelected() && getIndexSelected() == i &&
 	 * 								size() == \old(size()) 
 	 */
-	void select(int i);
+	@Override
+	public void select(int i) {
+		playlist.select(i);
+	}
 
 	/**
 	 * Moves the current selected song up to position i, 
@@ -89,7 +124,9 @@ public abstract class AbsPlaylist implements Playlist{
 	 * 					getIndexSelected() == i  && 
 	 * 					size() == \old(size()) 
 	 */
-	boolean moveUpSelected(int i);
+	public boolean moveUpSelected(int i) {
+		
+	}
 
 	
 	/**
@@ -99,7 +136,13 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @requires someSelected()
 	 * @ensures 0 <= \return < size()
 	 */
-	int getIndexSelected();
+	@Override
+	public int getIndexSelected() {
+		if (playlist.someSelected()) {
+			return playlist.getIndexSelected();
+		}
+	// o q retornar?
+	}
 
 	/**
 	 * Selects the next element, if any. Otherwise, no element is selected.
@@ -110,7 +153,13 @@ public abstract class AbsPlaylist implements Playlist{
 	 *          else !someSelected()
 	 * @ensures size() == \old(size()) 
 	 */
-	void next();
+	public void next() {
+		if(playlist.getIndexSelected() < playlist.size() - 1) {
+			// Como mudar o selected?
+		}else {
+			// Como mudar o selected?
+		}
+	}
 	
 	/**
 	 * Selects the previous element, if any. Otherwise, no element is selected.
@@ -121,7 +170,13 @@ public abstract class AbsPlaylist implements Playlist{
 	 *          else !someSelected() 
 	 * @ensures size() == \old(size()) 
 	 */
-	void previous();
+	public void previous() {
+		if(playlist.getIndexSelected() > 0) {
+			// Como mudar o selected?
+		}else {
+			// Como mudar o selected?
+		}
+	}
 
 	/**
 	 * Returns the name of the playlist
@@ -129,7 +184,10 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @return the name of the playlist
 	 * @ensures \result != null
 	 */
-	String getName();
+	@Override
+	public String getName() {
+		return this.playlistName;
+	}
 
 	/**
 	 * Returns if a song is playing and the play action has been performed via the playlist
@@ -137,7 +195,10 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @return true if a song is playing and the play action was done through the playlist,
 	 *         false otherwise
 	 */
-	boolean isPlaying();
+	@Override
+	public boolean isPlaying() {
+		return library.isPlaying();
+	}
 
 	/**
 	 * Plays the selected song
@@ -145,14 +206,20 @@ public abstract class AbsPlaylist implements Playlist{
 	 * @requires someSelected()
 	 * @ensures isPlaying()
 	 */
-	void play();
+	@Override
+	public void play() {
+		library.play();
+	}
 
 	/**
 	 * Stops the playing song
 	 * 
 	 * @requires isPlaying()
 	 */
-	void stop();
+	@Override
+	public void stop() {
+		library.stop();
+	}
 
 	/**
 	 * Reaction to property change events, namely those emitted by the player

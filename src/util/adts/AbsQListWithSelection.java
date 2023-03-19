@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> {
 
     private E selected;
-    private List<E> objList;
+    protected List<E> objList;
 
     public AbsQListWithSelection(List<E> lista) {
         selected = null;

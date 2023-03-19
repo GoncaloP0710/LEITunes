@@ -47,11 +47,49 @@ public class MusicLibrary extends AbsQListWithSelection<Song> implements QListWi
     }
 
     public Iterable<ISong> getMatches(String reexp) {
-    	
+    	ArrayList<ISong> list = new ArrayList<ISong>();
+    	for (int i = 0; i < super.objList.size(); i++) {
+    		if (super.objList.get(i).matches(reexp)) {
+    			list.add(super.objList.get(i));
+    		}
+    	}
+    	return list;
     }
 
     public Iterable<ISong> getSongs() {
+    	ArrayList<ISong> list = new ArrayList<ISong>();
+    	for (int i = 0; i < super.objList.size(); i++) {
+    		list.add(super.objList.get(i));   		
+    	}
+    	return list;
     	
     }
+
     
+//--------------------------------------------------------------------------------------
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void emitEvent(SongLibraryEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void registerListener(Listener<SongLibraryEvent> obs) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterListener(Listener<SongLibraryEvent> obs) {
+		// TODO Auto-generated method stub
+		
+	}
+//--------------------------------------------------------------------------------------
+
 }
