@@ -132,7 +132,7 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public boolean moveUpSelected(int i) {
-		return moveUpSelected(i);
+		return playlist.moveUpSelected(i);
 	}
 
 	
