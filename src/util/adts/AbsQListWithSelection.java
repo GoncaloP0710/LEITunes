@@ -3,6 +3,8 @@ package util.adts;
 import java.util.Iterator;
 import java.util.List;
 
+import domain.facade.ISong;
+
 public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> {
 
     private E selected;
@@ -12,7 +14,7 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
         selected = null;
         objList = lista;
     }
-
+    
     /**
      * Selects the element on the position i
      * 
@@ -140,6 +142,28 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
 	@Override
 	public Iterator<E> iterator() {
 		return objList.iterator();
+	}
+	
+	/**
+	 * Moves the current selected song up to position i, 
+	 * shifting down all elements in the playlist from 
+	 * positions i+1 to \old getIndexSelected()-1, 
+	 * if movement in the playlist is possible 
+	 * 
+	 * @param i the index where this element is going to be moved
+	 * @requires someSelected() && 0 <= i < getIndexSelected()
+	 * @ensures \return ==> someSelected() && 
+	 * 					getIndexSelected() == i  && 
+	 * 					size() == \old(size()) 
+	 */
+	public boolean moveUpSelected(int i) {
+		if (getIndexSelected() > 0) {	
+			E selected1 = getSelected();
+			objList.remove(getIndexSelected());
+			objList.add(i, selected1);
+			return true;
+		}
+		return false;
 	}
     
 }

@@ -6,4 +6,13 @@ import util.observer.Event;
 public abstract class SongLibraryEvent implements Event {
 	private ISong song;
 	private MusicLibrary library;
+	
+	
+	public ISong getSong() {
+		return song;
+	}
+	
+	public MusicLibrary getLibrary () {
+		return library;
+	}
 }

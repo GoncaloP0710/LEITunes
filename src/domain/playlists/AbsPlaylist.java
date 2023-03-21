@@ -15,8 +15,14 @@ public abstract class AbsPlaylist implements Playlist{
 	private AbsQListWithSelection<ISong> playlist;
 	private String playlistName;
 	
+	
 	public AbsPlaylist(MusicLibrary library1) {
 		library = library1;
+	}
+	
+	public AbsPlaylist(String name, MusicLibrary library1) {
+		library = library1;
+		playlistName = name;
 	}
 	
 	/**
@@ -124,8 +130,9 @@ public abstract class AbsPlaylist implements Playlist{
 	 * 					getIndexSelected() == i  && 
 	 * 					size() == \old(size()) 
 	 */
+	@Override
 	public boolean moveUpSelected(int i) {
-		
+		return moveUpSelected(i);
 	}
 
 	
@@ -138,10 +145,8 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public int getIndexSelected() {
-		if (playlist.someSelected()) {
-			return playlist.getIndexSelected();
-		}
-	// o q retornar?
+		return playlist.getIndexSelected();
+	
 	}
 
 	/**
@@ -153,11 +158,10 @@ public abstract class AbsPlaylist implements Playlist{
 	 *          else !someSelected()
 	 * @ensures size() == \old(size()) 
 	 */
+	@Override
 	public void next() {
 		if(playlist.getIndexSelected() < playlist.size() - 1) {
-			// Como mudar o selected?
-		}else {
-			// Como mudar o selected?
+			playlist.select(getIndexSelected()+1);
 		}
 	}
 	
@@ -170,11 +174,10 @@ public abstract class AbsPlaylist implements Playlist{
 	 *          else !someSelected() 
 	 * @ensures size() == \old(size()) 
 	 */
+	@Override
 	public void previous() {
 		if(playlist.getIndexSelected() > 0) {
-			// Como mudar o selected?
-		}else {
-			// Como mudar o selected?
+			playlist.select(getIndexSelected()-1);
 		}
 	}
 
@@ -189,6 +192,8 @@ public abstract class AbsPlaylist implements Playlist{
 		return this.playlistName;
 	}
 
+	//-------------------------------------------------------------------------------------------------------
+	
 	/**
 	 * Returns if a song is playing and the play action has been performed via the playlist
 	 * 
@@ -226,12 +231,18 @@ public abstract class AbsPlaylist implements Playlist{
 	 * (can affect the selected song and song being played)
 	 */
 	@Override
-	void propertyChange(PropertyChangeEvent evt);
+	public void propertyChange(PropertyChangeEvent evt) {
+		
+	}
 	
 	/**
 	 * Reaction to events, namely those emitted by the music library that 
 	 * backs up this playlist (can affect the content of the playlist)
 	 */
 	@Override
-	void processEvent(SongLibraryEvent e);
+	public void processEvent(SongLibraryEvent e) {
+		
+	}
+	
+	//-------------------------------------------------------------------------------------------------------
 }
