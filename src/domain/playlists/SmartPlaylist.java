@@ -1,6 +1,7 @@
 package domain.playlists;
 
 import domain.core.MusicLibrary;
+import domain.facade.ISong;
 
 public abstract class SmartPlaylist extends AbsPlaylist{
 
@@ -8,11 +9,14 @@ public abstract class SmartPlaylist extends AbsPlaylist{
 		super(name,library);
 	}
 	
-	public protected void addAutomatic(ISong song) {
+	protected void addAutomatic(ISong song) {
 		
 	}
 	
-	public protected void removeAutomatic(int index) {
-		
+	protected void removeAutomatic(int index) {
+		this.select(index);
+		this.remove();
 	}
+	
+	
 }

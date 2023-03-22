@@ -25,4 +25,20 @@ public enum Rate {
 		}
 		return rating;
 	}
+	
+	public boolean isHigher(Rate rating) {
+		switch(rating) {
+	    case MID:
+	    	if (rating == HIGH) {
+	    		return false;
+	    	}
+	      return true;
+	    case LOW:
+	    	if (rating == LOW) {
+	    		return true;
+	    	}
+	       return false;
+		}
+		return true;
+	}
 }
