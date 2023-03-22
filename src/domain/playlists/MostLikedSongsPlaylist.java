@@ -1,27 +1,30 @@
 package domain.playlists;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import domain.core.MusicLibrary;
 import domain.core.Rate;
+import domain.core.SongAddedLibraryEvent;
 import domain.core.SongLibraryEvent;
+import domain.core.SongRemovedLibraryEvent;
 import domain.facade.ISong;
 
 public class MostLikedSongsPlaylist extends SmartPlaylist{
 	
 	protected final int maxNumSongs;
 	private int numSongs;
+	
 	private Rate lowestRate;
 	private int lowestRateIndex;
 
 	public MostLikedSongsPlaylist(MusicLibrary library) {
 		super("MostLikedSongsPlaylist", library);
+		
 		this.maxNumSongs = 10;
 		numSongs = 0;
-		lowestRate = null;
 		
+		lowestRate = Rate.LOW;
+		lowestRateIndex = 0;
 	}
 	
 	/**
@@ -31,22 +34,33 @@ public class MostLikedSongsPlaylist extends SmartPlaylist{
 	@Override
 	public void processEvent(SongLibraryEvent event) {
 		Rate rating = event.getSong().getRating();
-		if (rating != null) {
-			//Verificar se a musica nao foi apagada da library
-			ArrayList<ISong> libraryListSongs = (ArrayList<ISong>) event.getLibrary().getSongs();
-			if (libraryListSongs.contains(event.getSong())) {
-				//Verificar se a musica pode entrar na lista
-				if (numSongs == maxNumSongs) {
-					
-					this.remove();
-					numSongs--;
-				}
+		if(event instanceof SongAddedLibraryEvent) {
+			if (numSongs < maxNumSongs) {
 				this.add(event.getSong());
 				numSongs++;
+				return;
+			}else {
+				this.select(0);
+				for (int i = 0; i < 10; i++) {
+					if (!this.getSelected().getRating().isHigher(lowestRate)) {
+						lowestRate = this.getSelected().getRating();
+						lowestRateIndex = i;
+					}
+					this.next();
+				}
+				this.select(lowestRateIndex);
+				//Remover o lowestRate e adicionar a nova musica
+				this.remove();
+				this.add(event.getSong());
 			}
-			
+		} else if (event instanceof SongRemovedLibraryEvent) {
+			this.select(0);
+			for (int i = 0; i < this.size(); i++) {
+				if (this.getSelected() == (event.getSong())) {
+					this.remove();
+				}
+				this.next();
+			}
 		}
-	}
-		
-	
+	}	
 }

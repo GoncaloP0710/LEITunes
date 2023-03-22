@@ -1,19 +1,20 @@
 package domain.playlists;
 
-import java.util.Iterator;
 
 import domain.core.MusicLibrary;
+import domain.core.SongAddedLibraryEvent;
 import domain.core.SongLibraryEvent;
-import domain.facade.ISong;
+import domain.core.SongRemovedLibraryEvent;
 
 public class MostRecentlyAddedSongsPlaylist extends SmartPlaylist{
 
-	private SmartPlaylist playlistSmart;
 	protected final int maxNumSongs;
+	private int numSongs;
 	
 	public MostRecentlyAddedSongsPlaylist(MusicLibrary library) {
 		super("MostRecentlyAddedSongsPlaylist", library);
 		this.maxNumSongs = 10;
+		numSongs = 0;
 	}
 	
 	/**
@@ -22,7 +23,23 @@ public class MostRecentlyAddedSongsPlaylist extends SmartPlaylist{
 	 */
 	@Override
 	public void processEvent(SongLibraryEvent event) {
-		
+		if(event instanceof SongAddedLibraryEvent) {
+			if (numSongs != maxNumSongs) {
+				this.add(event.getSong());
+				numSongs++;
+			}else {
+				this.select(0);
+				this.remove();
+				this.add(event.getSong());
+			}
+		} else if (event instanceof SongRemovedLibraryEvent) {
+			this.select(0);
+			for (int i = 0; i < this.size(); i++) {
+				if (this.getSelected() == (event.getSong())) {
+					this.remove();
+				}
+				this.next();
+			}
+		}
 	}
-
 }

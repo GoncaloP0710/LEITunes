@@ -2,9 +2,11 @@ package domain.playlists;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import domain.core.MusicLibrary;
 import domain.core.Song;
+import domain.core.SongAddedLibraryEvent;
 import domain.core.SongLibraryEvent;
 import domain.facade.ISong;
 import util.adts.AbsQListWithSelection;
@@ -192,6 +194,11 @@ public abstract class AbsPlaylist implements Playlist{
 		return this.playlistName;
 	}
 
+	@Override
+	public Iterator<ISong> iterator() {
+		return playlist.iterator();
+	}
+
 	//-------------------------------------------------------------------------------------------------------
 	
 	/**
@@ -213,6 +220,8 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public void play() {
+		SongAddedLibraryEvent event = new SongAddedLibraryEvent(playlist.getSelected(), library);
+		processEvent(event);
 		library.play();
 	}
 
@@ -232,7 +241,7 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		
+		//evt.getNewValue()
 	}
 	
 	/**

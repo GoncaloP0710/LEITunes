@@ -10,7 +10,7 @@ public abstract class SmartPlaylist extends AbsPlaylist{
 	}
 	
 	protected void addAutomatic(ISong song) {
-		
+		this.add(song);
 	}
 	
 	protected void removeAutomatic(int index) {
