@@ -10,11 +10,20 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
     private E selected;
     protected List<E> objList;
 
+    /**
+     * triggers list creation without, however,
+     * committing to any specific implementation for these lists
+     */
     public AbsQListWithSelection() {
         selected = null;
         objList = createList();
     }
     
+    /**
+     * list creation
+     * 
+     * @return list
+     */
     public abstract List<E> createList();
     
     
@@ -74,10 +83,12 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
      */
     @Override
     public void next() {
-        if (getIndexSelected() < size() - 1) {
-            selected = objList.get(getIndexSelected() + 1);
-        } else {
-            selected = null;
+        if (someSelected()) {
+        	if (getIndexSelected() < size() - 1) {
+                selected = objList.get(getIndexSelected() + 1);
+            } else {
+                selected = null;
+            }
         }
     }
 
@@ -87,11 +98,13 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
      */
     @Override
     public void previous() {
-        if (getIndexSelected() > 0) {
-            selected = objList.get(getIndexSelected() - 1);
-        } else {
-            selected = null;
-        }
+    	if (someSelected()) {
+    		if (getIndexSelected() > 0) {
+                selected = objList.get(getIndexSelected() - 1);
+            } else {
+                selected = null;
+            }
+    	}
     }
 
     /**
@@ -146,6 +159,8 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
 	public Iterator<E> iterator() {
 		return objList.iterator();
 	}
+	
+	//---------------------------------------------------------------------------------
 	
 	/**
 	 * Moves the current selected song up to position i, 
