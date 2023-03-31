@@ -14,9 +14,8 @@ public abstract class SmartPlaylist extends AbsPlaylist{
 	}
 	
 	protected void removeAutomatic(int index) {
+		//Tenho de voltar a selecionar a musica que estava selecionada
 		this.select(index);
 		this.remove();
 	}
-	
-	
 }

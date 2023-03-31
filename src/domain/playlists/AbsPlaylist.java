@@ -9,6 +9,8 @@ import domain.core.Song;
 import domain.core.SongAddedLibraryEvent;
 import domain.core.SongLibraryEvent;
 import domain.facade.ISong;
+import domain.player.Player;
+import domain.player.PlayerFactory;
 import util.adts.AbsQListWithSelection;
 
 public abstract class AbsPlaylist implements Playlist{
@@ -16,15 +18,20 @@ public abstract class AbsPlaylist implements Playlist{
 	private MusicLibrary library;
 	private AbsQListWithSelection<ISong> playlist;
 	private String playlistName;
-	
+	private Player player = PlayerFactory.INSTANCE.getPlayer();
+	private Song songPlaying;
 	
 	public AbsPlaylist(MusicLibrary library1) {
+		this.player.addListener(this);
 		library = library1;
+		songPlaying = null;
 	}
 	
 	public AbsPlaylist(String name, MusicLibrary library1) {
 		library = library1;
 		playlistName = name;
+		this.player.addListener(this);
+		songPlaying = null;
 	}
 	
 	/**
@@ -83,7 +90,6 @@ public abstract class AbsPlaylist implements Playlist{
 		}
 		if(!exist) {
 			playlist.add(song);
-			playlist.select(size()-1);
 			return true;
 		}
 		return false;
@@ -198,8 +204,6 @@ public abstract class AbsPlaylist implements Playlist{
 	public Iterator<ISong> iterator() {
 		return playlist.iterator();
 	}
-
-	//-------------------------------------------------------------------------------------------------------
 	
 	/**
 	 * Returns if a song is playing and the play action has been performed via the playlist
@@ -220,9 +224,12 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public void play() {
-		SongAddedLibraryEvent event = new SongAddedLibraryEvent(playlist.getSelected(), library);
-		processEvent(event);
-		library.play();
+		if (isPlaying()) {
+			stop();
+		}
+		player.load(playlist.getSelected().getFilename());
+		player.play();
+		songPlaying = playlist.getSelected();
 	}
 
 	/**
@@ -234,6 +241,8 @@ public abstract class AbsPlaylist implements Playlist{
 	public void stop() {
 		library.stop();
 	}
+	
+	//-------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Reaction to property change events, namely those emitted by the player
@@ -242,6 +251,7 @@ public abstract class AbsPlaylist implements Playlist{
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		//evt.getNewValue()
+		//ver se musica acabou ou foi parada e fazes as coisas concuante o enunciado
 	}
 	
 	/**
@@ -254,4 +264,5 @@ public abstract class AbsPlaylist implements Playlist{
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
+
 }

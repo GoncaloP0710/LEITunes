@@ -13,7 +13,7 @@ public class MostRecentlyAddedSongsPlaylist extends SmartPlaylist{
 	
 	public MostRecentlyAddedSongsPlaylist(MusicLibrary library) {
 		super("MostRecentlyAddedSongsPlaylist", library);
-		this.maxNumSongs = 10;
+		this.maxNumSongs = 4;
 		numSongs = 0;
 	}
 	

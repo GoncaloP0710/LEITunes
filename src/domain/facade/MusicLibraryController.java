@@ -30,10 +30,10 @@ public class MusicLibraryController {
 			Mp3File mp3 = new Mp3File(filename);
 			if (mp3.hasId3v1Tag()) {
 				ID3v1 tag = mp3.getId3v1Tag();
-		        String title = tag.getTitle();
-		        String artist = tag.getArtist();
-		        String album = tag.getAlbum();
-		        String genre = tag.getGenreDescription();
+		        String title = tag.getTitle() == null ? "unkown" : tag.getTitle();
+		        String artist = tag.getArtist()  == null ? "unkown" : tag.getArtist();
+		        String album = tag.getAlbum()  == null ? "unkown" : tag.getAlbum();
+		        String genre = tag.getGenreDescription()  == null ? "unkown" : tag.getGenreDescription();
 		        List<String> artists = new ArrayList<String>();
 		        artists.add(artist);
 		        SongMetaInfo songInfo = new SongMetaInfo(title, genre, artists, album);
@@ -41,10 +41,10 @@ public class MusicLibraryController {
 		        library.add(song);
 			} else if (mp3.hasId3v2Tag()) {
 				ID3v2 tag = mp3.getId3v2Tag();
-				String title = tag.getTitle();
-		        String artist = tag.getArtist();
-		        String album = tag.getAlbum();
-		        String genre = tag.getGenreDescription();
+		        String title = tag.getTitle() == null ? "unkown" : tag.getTitle();
+		        String artist = tag.getArtist()  == null ? "unkown" : tag.getArtist();
+		        String album = tag.getAlbum()  == null ? "unkown" : tag.getAlbum();
+		        String genre = tag.getGenreDescription()  == null ? "unkown" : tag.getGenreDescription();
 		        List<String> artists = new ArrayList<String>();
 		        artists.add(artist);
 		        SongMetaInfo songInfo = new SongMetaInfo(title, genre, artists, album);
@@ -65,32 +65,29 @@ public class MusicLibraryController {
 	}
 
 	public Optional<ISong> getSelectedSong() {
-		return Optional.ofNullable(library.getSelected());
+		
+		if (library.someSelected()) {
+			return Optional.of(library.getSelected());
+		}
+		
+		return Optional.empty();
 	}
 	
 	public void removeSelectedSong() {
 		library.remove();
 	}
 	
-	//------------------------------------------------
 	public void play() {
-		if(library.someSelected()) {
-			if(library.isPlaying()) {
-				library.stop();
-			}
+		if (library.someSelected()) {
 			library.play();
-			//o contador de uma música é incrementado sempre que a música é tocada até ao fim
-			//Como é q eu sei se foi tocada ate ao fim?
-			library.getSelected().incTimesPlayed();
 		}
 	}
 	
 	public void stop() {
-		library.stop();
-		//se essa música foi posta a tocar através da 
-		//Como é q eu sei isso?
+		if (library.isPlaying()) {
+			library.stop();
+		}
 	}
-	//------------------------------------------------
 	
 	public void incRateSelected() {
 		library.incRateSelected();

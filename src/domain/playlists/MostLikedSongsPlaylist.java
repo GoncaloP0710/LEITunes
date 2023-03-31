@@ -6,6 +6,7 @@ import domain.core.MusicLibrary;
 import domain.core.Rate;
 import domain.core.SongAddedLibraryEvent;
 import domain.core.SongLibraryEvent;
+import domain.core.SongRatedLibraryEvent;
 import domain.core.SongRemovedLibraryEvent;
 import domain.facade.ISong;
 
@@ -20,7 +21,7 @@ public class MostLikedSongsPlaylist extends SmartPlaylist{
 	public MostLikedSongsPlaylist(MusicLibrary library) {
 		super("MostLikedSongsPlaylist", library);
 		
-		this.maxNumSongs = 10;
+		this.maxNumSongs = 4;
 		numSongs = 0;
 		
 		lowestRate = Rate.LOW;
@@ -34,7 +35,7 @@ public class MostLikedSongsPlaylist extends SmartPlaylist{
 	@Override
 	public void processEvent(SongLibraryEvent event) {
 		Rate rating = event.getSong().getRating();
-		if(event instanceof SongAddedLibraryEvent) {
+		if(event instanceof SongRatedLibraryEvent) {
 			if (numSongs < maxNumSongs) {
 				this.add(event.getSong());
 				numSongs++;

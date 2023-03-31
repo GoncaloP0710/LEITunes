@@ -10,10 +10,13 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
     private E selected;
     protected List<E> objList;
 
-    public AbsQListWithSelection(List<E> lista) {
+    public AbsQListWithSelection() {
         selected = null;
-        objList = lista;
+        objList = createList();
     }
+    
+    public abstract List<E> createList();
+    
     
     /**
      * Selects the element on the position i
