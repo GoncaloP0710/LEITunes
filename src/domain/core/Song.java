@@ -58,7 +58,7 @@ public class Song implements ISong, RegExpMatchable {
 	 */
     @Override
     public void incRating() {
-    	rate = rate.incRating(rate);
+    	rate = rate.incRating();
     }
 
     /**
@@ -67,7 +67,7 @@ public class Song implements ISong, RegExpMatchable {
 	 */
     @Override
     public void decRating() {
-    	rate = rate.decRating(rate);
+    	rate = rate.decRating();
     }
 
     /**
@@ -135,5 +135,18 @@ public class Song implements ISong, RegExpMatchable {
     @Override
     public boolean matches(String regexp) {
         return songInfo.matches(regexp);
+    }
+    
+    /**
+     * 
+     */
+    public String toString() {
+    	StringBuilder str = new StringBuilder();
+    	str.append("[").append(getSongTitle()).append(", ");
+    	str.append(getAlbum()).append(", ");
+    	str.append(getGenre()).append(", ");
+    	str.append(getArtists()).append("] --- ");
+    	//O que representam os numeros?
+    	return str.toString();
     }
 }

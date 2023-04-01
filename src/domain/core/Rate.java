@@ -14,14 +14,14 @@ public enum Rate {
 	 * @param rating
 	 * @return
 	 */
-	public Rate incRating(Rate rating) {
-		switch(rating) {
+	public Rate incRating() {
+		switch(this) {
 	    case LOW:
 	      return MID;
 	    case MID:
 	       return HIGH;
 		default:
-			return rating;
+			return this;
 		}
 	}
 	
@@ -30,14 +30,14 @@ public enum Rate {
 	 * @param rating
 	 * @return
 	 */
-	public Rate decRating(Rate rating) {
-		switch(rating) {
+	public Rate decRating() {
+		switch(this) {
 	    case MID:
 	      return LOW;
 	    case HIGH:
 	       return MID;
 		default:
-			return rating;
+			return this;
 		}
 	}
 	
@@ -62,6 +62,12 @@ public enum Rate {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param rating
+	 * @return
+	 */
 	public boolean isHigher(Rate rating) {
 		switch(rating) {
 	    case MID:
@@ -77,4 +83,28 @@ public enum Rate {
 			return false;
 		}
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @param rating
+	 * @return
+	 */
+	public boolean isLower(Rate rating) {
+		switch(rating) {
+	    case MID:
+	    	if (rating == HIGH) {
+	    		return true;
+	    	}
+	      return true;
+	    case LOW:
+	    	if (rating == MID || rating == HIGH) {
+	    		return true;
+	    	}
+		default:
+			return false;
+		}
+	}
+	
+	
 }

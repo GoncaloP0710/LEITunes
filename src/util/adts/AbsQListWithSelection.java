@@ -169,13 +169,27 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
 		return objList.iterator();
 	}
 	
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+    	StringBuilder str = new StringBuilder();
+    	for(int i = 0; i < size(); i++) {
+    		str.append(String.valueOf(i)).append(" ");
+    		str.append(get(i).toString());
+    		str.append("\n");
+    	}
+    	return str.toString();
+    }
+	
 	//---------------------------------------------------------------------------------
 	
 	/**
 	 * Moves the current selected song up to position i, 
-	 * shifting down all elements in the playlist from 
+	 * shifting down all elements in the play list from 
 	 * positions i+1 to \old getIndexSelected()-1, 
-	 * if movement in the playlist is possible 
+	 * if movement in the play list is possible 
 	 * 
 	 * @param i the index where this element is going to be moved
 	 * @requires someSelected() && 0 <= i < getIndexSelected()
@@ -184,16 +198,13 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
 	 * 					size() == \old(size()) 
 	 */
 	public boolean moveUpSelected(int i) {
-		if (someSelected()) {
-			if (getIndexSelected() > 0) {	
-				E selected1 = getSelected();
-				objList.remove(getIndexSelected());
-				objList.add(i, selected1);
-				select(i);
-				return true;
-			}
+		if (someSelected() && 0 <= i && i < getIndexSelected()) {
+			E selected1 = getSelected();
+			objList.remove(getIndexSelected());
+			objList.add(i, selected1);
+			select(i);
+			return true;
 		}
 		return false;
-	}
-    
+	}    
 }

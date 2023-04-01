@@ -90,8 +90,10 @@ public class MostLikedSongsPlaylist extends SmartPlaylist{
 			return;
 		} else if (event instanceof SongRatedLibraryEvent) {
 			boolean songChangedIsOnPlaylist = false;
+			int indexOfSongChanged = 0;
 			this.select(0);
-			//Scrolls the list looking for the lowest rate 
+			//Scrolls the play list looking for the lowest rate 
+			//If it finds the changed song songChangedIsOnPlaylist = true && saves its index
 			for (int i = 0; i < this.size(); i++) {
 				if (!this.getSelected().getRating().isHigherOrSame(lowestRate)) {
 					lowestRate = this.getSelected().getRating();
@@ -99,9 +101,12 @@ public class MostLikedSongsPlaylist extends SmartPlaylist{
 				}
 				if (this.getSelected() == event.getSong()) {
 					songChangedIsOnPlaylist = true;
+					indexOfSongChanged = i;
 				}
 				this.next();
 			}
+			//if the song that was changed is not on the play list then checks if its rating is
+			//higher than the lowest of the play list and if it is swaps both
 			if (!songChangedIsOnPlaylist) {
 				if (event.getSong().getRating().isHigherOrSame(lowestRate)) {
 					this.select(lowestRateIndex);
@@ -109,15 +114,37 @@ public class MostLikedSongsPlaylist extends SmartPlaylist{
 					this.add(event.getSong());
 				}
 			} else {
+				//checks if the rate of the song changed is higher than the lowest of the play list
+				//because if it is, there is no need to do anything
 				if (!event.getSong().getRating().isHigher(lowestRate)) {
 					//get highest rated song that is not on the top 4 
 					ISong highestSong = null;
+					Rate highestRate = Rate.LOW;
+					boolean belongsToTop4 = false;
 					for (int i = 0; i < listSongs.size(); i++) {
+						belongsToTop4 = false;
+						this.select(0);
 						for (int j = 0; j < this.size(); j++) {
-							
+							if (listSongs.get(i) == this.getSelected()) {
+								belongsToTop4 = true;
+								break;
+							}
+							this.next();
+						}
+						if (!belongsToTop4) {
+							if (listSongs.get(i).getRating().isHigherOrSame(highestRate)) {
+								highestRate = listSongs.get(i).getRating();
+								highestSong = listSongs.get(i);
+							}
 						}
 					}
-
+					//if the highest rated song that is not on the top 4 is higher rating than the
+					//one that got changed, swaps both
+					if (!event.getSong().getRating().isHigherOrSame(highestRate)) {
+						this.select(indexOfSongChanged);
+						this.remove();
+						this.add(highestSong);
+					}
 				}
 			}
 		}

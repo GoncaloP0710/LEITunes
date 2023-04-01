@@ -10,7 +10,27 @@ public class LEITunes {
 	private MusicLibraryController libraryController;
 	private PlaylistListController playlistControler;
 	
-	//falta constrytor
+	public LEITunes (MusicLibrary library, PlaylistList playlist, MusicLibraryController libraryController, PlaylistListController playlistControler) {
+		this.library = library;
+		this.playlist = playlist;
+		this.libraryController = libraryController;
+		this.playlistControler = playlistControler;
+	}
 	
-	//falta getters com nome especifico
+	public MusicLibrary getMusicLibrary () {
+		return library;
+	}
+	
+	public PlaylistList getPlaylistList () {
+		return playlist;
+	}
+	
+	public MusicLibraryController getMusicLibraryController () {
+		return libraryController;
+	}
+	
+	public PlaylistListController getPlaylistListController () {
+		return playlistControler;
+	}
+	
 }

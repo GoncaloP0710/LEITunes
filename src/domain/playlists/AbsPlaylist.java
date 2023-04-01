@@ -27,9 +27,9 @@ public abstract class AbsPlaylist implements Playlist{
 	}
 	
 	/**
-	 * Returns the number of songs in the playlist
+	 * Returns the number of songs in the play list
 	 * 
-	 * @return the number of songs in the playlist
+	 * @return the number of songs in the play list
 	 * @ensures \return >= 0
 	 */
 	@Override
@@ -61,13 +61,13 @@ public abstract class AbsPlaylist implements Playlist{
 	}
 	
 	/**
-	 * Adds a song to the end of the playlist, if it
+	 * Adds a song to the end of the play list, if it
 	 * does not exist yet and selects it,
 	 * if addition is possible
 	 *
 	 * @param song the element to be added
 	 * @requires song != null 
-	 * @return true if the song was added to the playlist, false otherwise
+	 * @return true if the song was added to the play list, false otherwise
 	 * @ensures \result ==> size() == \old(size()) + 1 &&
 	 * 						someSelected() && 
 	 * 						getIndexSelected() == size() - 1

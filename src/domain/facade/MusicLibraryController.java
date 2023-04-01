@@ -21,10 +21,22 @@ public class MusicLibraryController {
 		this.library = library;
 	}
 	
+	/**
+	 * gets the number of songs in controlled library
+	 * 
+	 * @return number of songs in controlled library
+	 */
 	public int numberOfSongs() {
 		return library.size();
 	}
 	
+	/**
+	 * add music to library controlled by obtaining meta-information
+	 *  about it from the file
+	 * 
+	 * @requires filename is an mp3 file name 
+	 * @param filename mp3 file name
+	 */
 	public void addSong(String filename) {
 		try {
 			Mp3File mp3 = new Mp3File(filename);
@@ -58,12 +70,23 @@ public class MusicLibraryController {
 		}
 	}
 	
+	/**
+	 * sends the selection request to the controlled library if possible
+	 * 
+	 * @requires 0 <= i < numberOfSongs()
+	 * @param i
+	 */
 	public void selectSong(int i) {
 		if(i < numberOfSongs() && i >= 0) {
 			library.select(i);
 		}
 	}
 
+	/**
+	 * returns the selected song in the library (if any)
+	 * 
+	 * @return selected song in the library (if any)
+	 */
 	public Optional<ISong> getSelectedSong() {
 		
 		if (library.someSelected()) {
@@ -73,34 +96,68 @@ public class MusicLibraryController {
 		return Optional.empty();
 	}
 	
+	/**
+	 * deletes the selected song in the library (if it exists)
+	 */
 	public void removeSelectedSong() {
 		library.remove();
 	}
 	
+	/**
+	 * if any music is selected, determines the interruption of the music that is 
+	 * playing (if that's the case) and starts playing the currently selected song in the library 
+	 * controlled; a song's counter is incremented each time the song is played to the end; if 
+	 * no music is selected does nothing
+	 */
 	public void play() {
 		if (library.someSelected()) {
 			library.play();
 		}
 	}
 	
+	/**
+	 * stops the music that was being played
+	 */
 	public void stop() {
 		if (library.isPlaying()) {
 			library.stop();
 		}
 	}
 	
+	/**
+	 * passes the rating of the selected song in the controlled library (if it exists)
+	 * to the value immediately above what it currently has (or stays the same if 
+	 * this value is already the maximum)
+	 */
 	public void incRateSelected() {
 		library.incRateSelected();
 	}
 	
+	/**
+	 * passes the rating of the selected song in the controlled library (if it exists)
+	 * to the value immediately bellow what it currently has (or stays the same if 
+	 * this value is already the minimum)
+	 */
 	public void decRateSelected() {
 		library.decRateSelected();
 	}
 	
+	/**
+	 * returns an iterable structure with the songs from the controlled
+	 * library that match the given regular expression
+	 * 
+	 * @param reexp regular expression
+	 * @return iterable structure with the songs from the controlled library that match the given regular expression
+	 */
 	public Iterable<ISong> getMatches(String reexp) {
 		return library.getMatches(reexp);
 	}
 	
+	/**
+	 * returns an iterable structure with the songs in the library
+	 * 
+	 * @return iterable structure with the songs in the library
+	 */
 	public Iterable<ISong> getSongs() {
 		return library.getSongs();
 	}

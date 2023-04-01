@@ -114,20 +114,25 @@ public class MusicLibrary extends AbsQListWithSelection<Song> implements Subject
     
  //--------------------------------------------------------------------------------------
 
-	@Override
 	public void add(ISong song) {
-
+		SongAddedLibraryEvent evt = new SongAddedLibraryEvent(song, this);
+		super.add(songPlaying);
 	}
 	
 	@Override
 	public void remove() {
-
+		SongRemovedLibraryEvent evt = new SongRemovedLibraryEvent(super.getSelected(), this);
+		super.remove();
 	}
     
-    
-	@Override
-	public void rate() {
-
+	public void rate(Rate rate) {
+		while (super.getSelected().getRating().isHigher(rate)) {
+			super.getSelected().decRating();
+		}
+		while (super.getSelected().getRating().isLower(rate)) {
+			super.getSelected().incRating();
+		}
+		SongRatedLibraryEvent evt = new SongRatedLibraryEvent(super.getSelected(), this);
 	}
 
 	@Override
@@ -180,4 +185,17 @@ public class MusicLibrary extends AbsQListWithSelection<Song> implements Subject
 	public List<Song> createList() {
 		return new ArrayList<>();
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public String toString() {
+    	StringBuilder str = new StringBuilder();
+    	str.append("*****MUSIC LIBRARY****");
+    	str.append("\n");
+    	str.append(super.toString());
+    	return str.toString();
+    }
+
 }
