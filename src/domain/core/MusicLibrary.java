@@ -18,6 +18,9 @@ public class MusicLibrary extends AbsQListWithSelection<Song> implements Subject
     private Player player = PlayerFactory.INSTANCE.getPlayer();
     private List<Listener<SongLibraryEvent>> listeners = new ArrayList<>();
     
+    /**
+     * Creates a music Library
+     */
     public MusicLibrary() {
     	super();
         songPlaying = null;

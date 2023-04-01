@@ -19,19 +19,11 @@ public abstract class AbsPlaylist implements Playlist{
 	private AbsQListWithSelection<ISong> playlist;
 	private String playlistName;
 	private Player player = PlayerFactory.INSTANCE.getPlayer();
-	private Song songPlaying;
-	
-	public AbsPlaylist(MusicLibrary library1) {
-		this.player.addListener(this);
-		library = library1;
-		songPlaying = null;
-	}
 	
 	public AbsPlaylist(String name, MusicLibrary library1) {
+		this.player.addListener(this);
 		library = library1;
 		playlistName = name;
-		this.player.addListener(this);
-		songPlaying = null;
 	}
 	
 	/**
@@ -54,6 +46,7 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public ISong getSelected() {
+		// Require of getSelected() is not necessary because it is the same as require of the function
 		return playlist.getSelected();
 	}
 	
@@ -64,7 +57,7 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public boolean someSelected() {
-		return playlist.getSelected() != null;
+		return playlist.someSelected();
 	}
 	
 	/**
@@ -153,6 +146,7 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public int getIndexSelected() {
+		// Require of getSelected() is not necessary because it is the same as require of the function
 		return playlist.getIndexSelected();
 	
 	}
@@ -168,8 +162,11 @@ public abstract class AbsPlaylist implements Playlist{
 	 */
 	@Override
 	public void next() {
+		// Require of getSelected() is not necessary because it is the same as require of the function
 		if(playlist.getIndexSelected() < playlist.size() - 1) {
 			playlist.select(getIndexSelected()+1);
+		} else {
+			playlist.deSelect();
 		}
 	}
 	
@@ -186,6 +183,8 @@ public abstract class AbsPlaylist implements Playlist{
 	public void previous() {
 		if(playlist.getIndexSelected() > 0) {
 			playlist.select(getIndexSelected()-1);
+		} else {
+			playlist.deSelect();
 		}
 	}
 
@@ -229,7 +228,6 @@ public abstract class AbsPlaylist implements Playlist{
 		}
 		player.load(playlist.getSelected().getFilename());
 		player.play();
-		songPlaying = playlist.getSelected();
 	}
 
 	/**

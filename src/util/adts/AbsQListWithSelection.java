@@ -39,6 +39,13 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
     }
     
     /**
+     * removes the selection on the element that was selected
+     */
+    public void deSelect() {
+        selected = null;
+    }
+    
+    /**
      * Adds the element e and selects it
      * 
      * @param e
@@ -113,7 +120,9 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
     @Override
     public void remove() {
         if (someSelected()) {
+        	E oldSelected = getSelected();
             selected = null;
+            objList.remove(oldSelected);
         }
     }
 
@@ -175,11 +184,14 @@ public abstract class AbsQListWithSelection<E> implements QListWithSelection<E> 
 	 * 					size() == \old(size()) 
 	 */
 	public boolean moveUpSelected(int i) {
-		if (getIndexSelected() > 0) {	
-			E selected1 = getSelected();
-			objList.remove(getIndexSelected());
-			objList.add(i, selected1);
-			return true;
+		if (someSelected()) {
+			if (getIndexSelected() > 0) {	
+				E selected1 = getSelected();
+				objList.remove(getIndexSelected());
+				objList.add(i, selected1);
+				select(i);
+				return true;
+			}
 		}
 		return false;
 	}

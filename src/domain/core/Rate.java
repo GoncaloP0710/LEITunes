@@ -46,7 +46,7 @@ public enum Rate {
 	 * @param rating
 	 * @return
 	 */
-	public boolean isHigher(Rate rating) {
+	public boolean isHigherOrSame(Rate rating) {
 		switch(rating) {
 	    case MID:
 	    	if (rating == HIGH) {
@@ -54,12 +54,27 @@ public enum Rate {
 	    	}
 	      return true;
 	    case LOW:
+	    	if (rating == MID) {
+	    		return false;
+	    	}
+		default:
+			return true;
+		}
+	}
+	
+	public boolean isHigher(Rate rating) {
+		switch(rating) {
+	    case MID:
 	    	if (rating == LOW) {
 	    		return true;
 	    	}
-	       return false;
+	      return true;
+	    case HIGH:
+	    	if (rating == MID || rating == LOW) {
+	    		return true;
+	    	}
 		default:
-			return true;
+			return false;
 		}
 	}
 }
