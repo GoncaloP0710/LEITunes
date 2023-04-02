@@ -13,14 +13,22 @@ import domain.core.MusicLibrary;
 import domain.core.Song;
 import domain.core.SongMetaInfo;
 
+/**
+ * Represents a controller of a music library
+ */
 public class MusicLibraryController {
-	
+
 	MusicLibrary library;
-	
+
+	/**
+	 * builds a MusicLibraryController
+	 * 
+	 * @param library to be controlled by the MusicLibraryController
+	 */
 	public MusicLibraryController(MusicLibrary library) {
 		this.library = library;
 	}
-	
+
 	/**
 	 * gets the number of songs in controlled library
 	 * 
@@ -29,12 +37,12 @@ public class MusicLibraryController {
 	public int numberOfSongs() {
 		return library.size();
 	}
-	
+
 	/**
 	 * add music to library controlled by obtaining meta-information
-	 *  about it from the file
+	 * about it from the file
 	 * 
-	 * @requires filename is an mp3 file name 
+	 * @requires filename is an mp3 file name
 	 * @param filename mp3 file name
 	 */
 	public void addSong(String filename) {
@@ -42,26 +50,26 @@ public class MusicLibraryController {
 			Mp3File mp3 = new Mp3File(filename);
 			if (mp3.hasId3v1Tag()) {
 				ID3v1 tag = mp3.getId3v1Tag();
-		        String title = tag.getTitle() == null ? "unkown" : tag.getTitle();
-		        String artist = tag.getArtist()  == null ? "unkown" : tag.getArtist();
-		        String album = tag.getAlbum()  == null ? "unkown" : tag.getAlbum();
-		        String genre = tag.getGenreDescription()  == null ? "unkown" : tag.getGenreDescription();
-		        List<String> artists = new ArrayList<String>();
-		        artists.add(artist);
-		        SongMetaInfo songInfo = new SongMetaInfo(title, genre, artists, album);
-		        Song song = new Song(songInfo, filename);
-		        library.add(song);
+				String title = tag.getTitle() == null ? "unkown" : tag.getTitle();
+				String artist = tag.getArtist() == null ? "unkown" : tag.getArtist();
+				String album = tag.getAlbum() == null ? "unkown" : tag.getAlbum();
+				String genre = tag.getGenreDescription() == null ? "unkown" : tag.getGenreDescription();
+				List<String> artists = new ArrayList<String>();
+				artists.add(artist);
+				SongMetaInfo songInfo = new SongMetaInfo(title, genre, artists, album);
+				Song song = new Song(songInfo, filename);
+				library.add(song);
 			} else if (mp3.hasId3v2Tag()) {
 				ID3v2 tag = mp3.getId3v2Tag();
-		        String title = tag.getTitle() == null ? "unkown" : tag.getTitle();
-		        String artist = tag.getArtist()  == null ? "unkown" : tag.getArtist();
-		        String album = tag.getAlbum()  == null ? "unkown" : tag.getAlbum();
-		        String genre = tag.getGenreDescription()  == null ? "unkown" : tag.getGenreDescription();
-		        List<String> artists = new ArrayList<String>();
-		        artists.add(artist);
-		        SongMetaInfo songInfo = new SongMetaInfo(title, genre, artists, album);
-		        Song song = new Song(songInfo, filename);
-		        library.add(song);
+				String title = tag.getTitle() == null ? "unkown" : tag.getTitle();
+				String artist = tag.getArtist() == null ? "unkown" : tag.getArtist();
+				String album = tag.getAlbum() == null ? "unkown" : tag.getAlbum();
+				String genre = tag.getGenreDescription() == null ? "unkown" : tag.getGenreDescription();
+				List<String> artists = new ArrayList<String>();
+				artists.add(artist);
+				SongMetaInfo songInfo = new SongMetaInfo(title, genre, artists, album);
+				Song song = new Song(songInfo, filename);
+				library.add(song);
 			}
 		} catch (IOException e) {
 			System.err.println("Error reading MP3 file: " + e.getMessage());
@@ -69,7 +77,7 @@ public class MusicLibraryController {
 			System.err.println("Error reading MP3 file: " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * sends the selection request to the controlled library if possible
 	 * 
@@ -77,7 +85,7 @@ public class MusicLibraryController {
 	 * @param i
 	 */
 	public void selectSong(int i) {
-		if(i < numberOfSongs() && i >= 0) {
+		if (i < numberOfSongs() && i >= 0) {
 			library.select(i);
 		}
 	}
@@ -88,25 +96,27 @@ public class MusicLibraryController {
 	 * @return selected song in the library (if any)
 	 */
 	public Optional<ISong> getSelectedSong() {
-		
+
 		if (library.someSelected()) {
 			return Optional.of(library.getSelected());
 		}
-		
+
 		return Optional.empty();
 	}
-	
+
 	/**
 	 * deletes the selected song in the library (if it exists)
 	 */
 	public void removeSelectedSong() {
 		library.remove();
 	}
-	
+
 	/**
-	 * if any music is selected, determines the interruption of the music that is 
-	 * playing (if that's the case) and starts playing the currently selected song in the library 
-	 * controlled; a song's counter is incremented each time the song is played to the end; if 
+	 * if any music is selected, determines the interruption of the music that is
+	 * playing (if that's the case) and starts playing the currently selected song
+	 * in the library
+	 * controlled; a song's counter is incremented each time the song is played to
+	 * the end; if
 	 * no music is selected does nothing
 	 */
 	public void play() {
@@ -114,7 +124,7 @@ public class MusicLibraryController {
 			library.play();
 		}
 	}
-	
+
 	/**
 	 * stops the music that was being played
 	 */
@@ -123,36 +133,39 @@ public class MusicLibraryController {
 			library.stop();
 		}
 	}
-	
+
 	/**
-	 * passes the rating of the selected song in the controlled library (if it exists)
-	 * to the value immediately above what it currently has (or stays the same if 
+	 * passes the rating of the selected song in the controlled library (if it
+	 * exists)
+	 * to the value immediately above what it currently has (or stays the same if
 	 * this value is already the maximum)
 	 */
 	public void incRateSelected() {
 		library.incRateSelected();
 	}
-	
+
 	/**
-	 * passes the rating of the selected song in the controlled library (if it exists)
-	 * to the value immediately bellow what it currently has (or stays the same if 
+	 * passes the rating of the selected song in the controlled library (if it
+	 * exists)
+	 * to the value immediately bellow what it currently has (or stays the same if
 	 * this value is already the minimum)
 	 */
 	public void decRateSelected() {
 		library.decRateSelected();
 	}
-	
+
 	/**
 	 * returns an iterable structure with the songs from the controlled
 	 * library that match the given regular expression
 	 * 
 	 * @param reexp regular expression
-	 * @return iterable structure with the songs from the controlled library that match the given regular expression
+	 * @return iterable structure with the songs from the controlled library that
+	 *         match the given regular expression
 	 */
 	public Iterable<ISong> getMatches(String reexp) {
 		return library.getMatches(reexp);
 	}
-	
+
 	/**
 	 * returns an iterable structure with the songs in the library
 	 * 
@@ -160,5 +173,15 @@ public class MusicLibraryController {
 	 */
 	public Iterable<ISong> getSongs() {
 		return library.getSongs();
+	}
+
+	/**
+	 * gives a string based on the library
+	 * 
+	 * @return string based on the library
+	 */
+	@Override
+	public String toString() {
+		return library.toString();
 	}
 }

@@ -3,34 +3,55 @@ package domain.facade;
 import domain.core.MusicLibrary;
 import domain.playlists.PlaylistList;
 
+/**
+ * provides the initial system object containing a MusicLibrary and a
+ * PlaylistList.
+ * Additionally, it contains a MusicLibraryController and a
+ * PlaylistListController
+ */
 public class LEITunes {
 
 	private MusicLibrary library;
 	private PlaylistList playlist;
 	private MusicLibraryController libraryController;
 	private PlaylistListController playlistControler;
-	
-	public LEITunes (MusicLibrary library, PlaylistList playlist, MusicLibraryController libraryController, PlaylistListController playlistControler) {
-		this.library = library;
-		this.playlist = playlist;
-		this.libraryController = libraryController;
-		this.playlistControler = playlistControler;
+
+	/**
+	 * Builds a LEITunes
+	 */
+	public LEITunes() {
+		this.library = new MusicLibrary();
+		this.playlist = new PlaylistList(library);
+		this.libraryController = new MusicLibraryController(library);
+		this.playlistControler = new PlaylistListController(playlist, library);
 	}
-	
-	public MusicLibrary getMusicLibrary () {
+
+	/**
+	 * @return library
+	 */
+	public MusicLibrary getMusicLibrary() {
 		return library;
 	}
-	
-	public PlaylistList getPlaylistList () {
+
+	/**
+	 * @return playlist
+	 */
+	public PlaylistList getPlaylistList() {
 		return playlist;
 	}
-	
-	public MusicLibraryController getMusicLibraryController () {
+
+	/**
+	 * @return libraryController
+	 */
+	public MusicLibraryController getMusicLibraryController() {
 		return libraryController;
 	}
-	
-	public PlaylistListController getPlaylistListController () {
+
+	/**
+	 * @return playlistControler
+	 */
+	public PlaylistListController getPlaylistController() {
 		return playlistControler;
 	}
-	
+
 }
