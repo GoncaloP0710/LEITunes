@@ -1,15 +1,58 @@
-Desenvolvimento Centrado em Objetos
-Trabalho Prático 1
-Gonçalo Pinto - Fc58178 e Pedro Pilô - Fc58179
+# Desenvolvimento Centrado em Objetos - Trabalho Prático 1
 
-Na classe abstrata AbsQListWithSelection.java decidimos usar dois atributos (E selected; List<E> objList), para representar o objeto selecionado e a lista de todos os objetos, respetivamente. A inicialização da lista é feita através do método createList() que com base na implementação desejada, a classe que estende a mesma pode definir a sua própria versão da lista ao dar @override deste método, que é o caso de ArrayQListWithSelection<E>.
+## Descrição do Projeto
 
-Na classe Rate.java decidimos implementar os 3 seguintes valores: Rate.LOW, Rate.MID e Rate.HIGH. Para além dos métodos necessários criamos outros métodos para comparar diferentes Rates.
-Na classe MusicLibraryController.java onde foi necessário a leitura dos meta-dados das músicas a partir de ficheiros mp3. Esta leitura foi realizada através da utilização da biblioteca de código aberto: com.mpatric.mp3agic. Através desta, conseguimos verificar o seu tipo de tag e retirar as informações necessárias da mesma.
+Este projeto é uma aplicação de biblioteca de músicas que permite gerenciar músicas, playlists e suas avaliações. A aplicação foi desenvolvida utilizando o paradigma de programação orientada a objetos.
 
-Nas classes MusicLibrary.java e AbsPlaylist.java é usado um atributo songPlaying que representa a música que esta a tocar e se nenhuma estiver, este valor é null. 
+## Estrutura do Projeto
 
-A classe MostRecentlyAddedSongsPlaylist.java representa uma playlist com no máximo, as 5 músicas que foram mais recentemente adicionadas a biblioteca e a classe MostLikedSongsPlaylist.java que por sua vez, representa uma playlist com as 5 músicas com maior Rate porém estas apenas são adicionadas quando ocorre um evento de alteração dos seus rates.
+- `src/`: Contém o código-fonte da aplicação.
+  - `client/`: Código relacionado ao cliente.
+  - `domain/`: Código relacionado ao domínio da aplicação.
+    - `core/`: Classes principais do domínio, como `MusicLibrary`, `Rate`, `Song`, etc.
+    - `facade/`: Classes de fachada, como `MusicLibraryController`, `PlaylistListController`, etc.
+    - `playlists/`: Classes relacionadas a playlists, como `AbsPlaylist`, `MostLikedSongsPlaylist`, `PlaylistList`, etc.
+  - `servicos/`: Serviços utilizados pela aplicação.
+  - `ui/`: Código relacionado à interface do usuário.
+  - `util/`: Utilitários usados pela aplicação.
+- `tests/`: Contém os testes da aplicação.
+  - `ArrayQListWithSelectionTests.java`: Testes para a classe `ArrayQListWithSelection`.
+  - `SongTests.java`: Testes para a classe `Song`.
+- `lib/`: Contém bibliotecas externas utilizadas pela aplicação.
+  - `jl1.0.1.jar`
+  - `mp3agic-0.9.1.jar`
+  - `swt.jar`
+- `docs/`: Documentação do projeto.
+- `songs/`: Contém arquivos de músicas para teste.
+- `.metadata/`, `.settings/`, `bin/`, `.classpath`, `.project`: Arquivos e pastas de configuração do Eclipse.
 
-Embora os commits no git terem sido realizados por apenas um membro do grupo, ambos os elementos ajudaram a realizar o projeto de forma igual.
+## Classes Principais
 
+### AbsQListWithSelection
+
+Na classe abstrata `AbsQListWithSelection.java`, usamos dois atributos (`E selected` e `List<E> objList`) para representar o objeto selecionado e a lista de todos os objetos, respectivamente. A inicialização da lista é feita através do método `createList()`, que pode ser sobrescrito pela classe que estende `AbsQListWithSelection`.
+
+### Rate
+
+Na classe `Rate.java`, implementamos três valores: `Rate.LOW`, `Rate.MID` e `Rate.HIGH`. Além dos métodos necessários, criamos outros métodos para comparar diferentes `Rate`.
+
+### MusicLibraryController
+
+Na classe `MusicLibraryController.java`, realizamos a leitura dos meta-dados das músicas a partir de arquivos mp3 utilizando a biblioteca de código aberto `com.mpatric.mp3agic`.
+
+### MusicLibrary e AbsPlaylist
+
+Nas classes `MusicLibrary.java` e `AbsPlaylist.java`, usamos um atributo `songPlaying` que representa a música que está tocando. Se nenhuma música estiver tocando, este valor é `null`.
+
+### MostRecentlyAddedSongsPlaylist e MostLikedSongsPlaylist
+
+A classe `MostRecentlyAddedSongsPlaylist.java` representa uma playlist com no máximo 5 músicas que foram mais recentemente adicionadas à biblioteca. A classe `MostLikedSongsPlaylist.java` representa uma playlist com as 5 músicas com maior `Rate`, que são adicionadas quando ocorre um evento de alteração dos seus rates.
+
+## Como Executar
+
+1. Clone o repositório.
+2. Execute a classe `GUIClient` ou `SimpleClient` para iniciar a aplicação.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
